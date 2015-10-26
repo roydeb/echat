@@ -71,6 +71,7 @@
 		    var croom = getParameterByName('chatroom');
 			var extras = uname+","+croom;
 			var total = "message,"+extras+","+msg;
+			document.getElementById("message").value = '';
 			socket.send(total);
 		}
 
@@ -89,7 +90,7 @@
 		div#userfunctionsdiv{
 			float: left;
 			width: 300px;
-			background-color: #e7f5fe;
+			background-color: #B9FB55;
 		}
 
 		textarea#chats{

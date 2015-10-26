@@ -1,4 +1,4 @@
-%% rel generated at {2015,10,26} {15,22,40}
+%% rel generated at {2015,10,26} {15,43,21}
 {release,{"echat","1"},
          {erts,"6.3"},
          [{kernel,"3.1"},

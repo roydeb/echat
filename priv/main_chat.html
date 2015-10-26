@@ -19,7 +19,7 @@
 		    $('#messages').append('<p></p>').children().last().text(message);
 		}
 		function add_chat(message) {
-		    $('.chatmessage').append('<p></p>').children().last().text(message);
+		    $('#chatmessage').append('<p></p>').children().last().text(message);
 		}
 
 		function connect_to_chat() {
@@ -81,6 +81,7 @@
 		div#chatboxdiv{
 			float: left;
 			width: 60%;
+			resize:none;
 		}
 		div#userfunctionsdiv{
 			float: left;
@@ -102,11 +103,12 @@
     		border: 1px solid #000;
 		}
 
-		.chatMessage {
+		#chatmessage {
 			background-color: #e7f5fe;
     		display: table-cell;
     		vertical-align: bottom;
     		overflow-y:auto;
+    		max-height: 300px;
 		}
 	</style>
 </head>
@@ -115,7 +117,7 @@
 	<div id="top">
 		<h5>Chats</h5>
 		<div id="chatboxdiv">
-			<div class = "chatmessage">
+			<div id = "chatmessage">
 			
 			</div>
 		</div>

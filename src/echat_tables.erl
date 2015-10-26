@@ -14,8 +14,8 @@ init() ->
 	io:format("user table = ~p~n",[mnesia:create_table(user,[{attributes,record_info(fields,user)},{disc_copies,[node()]}])]),
 	io:format("chatroom table = ~p~n",[mnesia:create_table(chatroom,[{attributes,record_info(fields,chatroom)},{disc_copies,[node()]}])]),
 	io:format("chat_messages table = ~p~n",[mnesia:create_table(chat_messages,[{attributes,record_info(fields,chat_messages)},{disc_copies,[node()]}])]),
-	io:format("userpid table = ~p~n",[mnesia:create_table(userpid,[{attributes,record_info(fields,userpid)},{disc_copies,[node()]}])]),
-	mnesia:create_table(in_chatroom,[{attributes,record_info(fields,in_chatroom)},{disc_copies,[node()]}]),
+	io:format("userpid table = ~p~n",[mnesia:create_table(userpid,[{attributes,record_info(fields,userpid)}])]),
+	io:format("in_chatroom table = ~p~n",[mnesia:create_table(in_chatroom,[{attributes,record_info(fields,in_chatroom)}])]),
 	mnesia:info().
 
 insert_user(Name,Password) ->

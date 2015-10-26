@@ -21,6 +21,9 @@
 		function add_chat(message) {
 		    $('#chatmessage').append('<p></p>').children().last().text(message);
 		}
+		function goBack() {
+ 		   window.history.back();
+		}
 
 		function connect_to_chat() {
 
@@ -126,7 +129,7 @@
 			<p><h4>Users here:</h4></p>
 			</div>
 			<br>
-			<button id="leave">Leave</button>
+			<button id="leave" onclick="goBack()">Leave</button>
 		</div>
 	</div>
 	<br><br><br>

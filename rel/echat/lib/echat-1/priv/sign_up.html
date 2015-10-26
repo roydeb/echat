@@ -1,0 +1,76 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>Echat Sign Up</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script >
+		var socket;
+		var text;
+
+		function add_message(message) {
+		    $('#messages').append('<p></p>').children().last().text(message);
+		}
+
+		function read_creds() {
+
+		    var uname = $('#new_username').val();
+		    var pass = $('#new_password').val();
+		    return (uname+","+pass);
+		}
+
+		function connect_to_chat() {
+
+		    socket = new WebSocket("ws://localhost:8080/signup");
+
+		    socket.onopen = function() {
+		        add_message("Connected.")
+		    };
+
+		    socket.onmessage = function(event) {
+		        switch(event.data){
+		        	case "approved":
+		        		add_message("successfully created, now redirecting!!");
+		        		window.open("index.html","_self",false);
+		        		break;
+		        	case "existing_user":
+		        		add_message("existing user with that name, please try a different name!!");
+		        		break;
+		        	case "please_try_again":
+		        		add_message("something went wrogn, please try again!!");
+		        		break;
+		        	default: 
+		        		text="done"; 
+		        }
+		    };
+
+		    socket.onclose = function() {
+		        add_message("Connection closed.");
+		    };
+		}
+
+		function send_credentials(e) {
+		    var message = read_creds();
+		    //add_message(message);
+		    socket.send(message);
+		    $('#message').val("");
+		}
+
+		$(document).ready(function() {
+		    connect_to_chat();
+		    $('#signup-button').click(send_credentials);
+		})
+	</script>
+</head>
+<body>
+	<h1>Echat signup</h1>
+  	<h4>New User signup below : </h4>
+	<p>Enter new username:</p>
+	<input type="text" id="new_username"></input>
+	<p>Password:</p>
+	<input type="password" id="new_password"></input>
+	<br>
+	<br>
+  	<button id="signup-button">SIGNUP</button>
+  	<div id="messages"></div>
+</body>
+</html>

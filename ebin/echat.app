@@ -1,0 +1,9 @@
+{application,echat,
+             [{description,[]},
+              {vsn,"1"},
+              {registered,[]},
+              {applications,[kernel,stdlib,cowboy]},
+              {mod,{echat_app,[]}},
+              {env,[]},
+              {modules,[ch_handler,echat_app,echat_server,echat_sup,
+                        echat_tables,mc_handler,signup_handler,ws_handler]}]}.

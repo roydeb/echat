@@ -1,0 +1,91 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>Echat login</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script >
+		var socket;
+		var text;
+
+		function add_message(message) {
+		    $('#messages').append('<p></p>').children().last().text(message);
+		}
+
+		function read_creds() {
+
+		    var uname = $('#username').val();
+		    var pass = $('#password').val();
+		    return (uname+","+pass);
+		}
+
+		function read_uname() {
+
+		    return $('#username').val();
+		}
+
+		function connect_to_chat() {
+
+		    socket = new WebSocket("ws://localhost:8080/ws");
+
+		    socket.onopen = function() {
+		        add_message("Connected.")
+		    };
+
+		    socket.onmessage = function(event) {
+		        
+		        switch(event.data){
+		        	case "valid":
+		        		var uname = read_uname();
+		        		window.open("chat_page.html?username="+uname,"_self",false);
+		        		break;
+		        	case "password_incorrect":
+		        		add_message("password incorrect bro");
+		        		break;
+		        	case "no_existing_user":
+		        		add_message("no such user, check out signup");
+		        		break;
+		        	default: 
+		        		add_message("something went wrogn, please try again"); 
+		        }
+		    };
+
+		    socket.onclose = function() {
+		        add_message("Connection closed.");
+		    };
+		}
+
+		function send_credentials(e) {
+		    var message = read_creds();
+		    //add_message(message);
+		    socket.send(message);
+		    $('#message').val("");
+		}
+
+		function open_signup(){
+			window.open("sign_up.html","_self",false);
+		}
+
+		$(document).ready(function() {
+		    connect_to_chat();
+		    $('#login-button').click(send_credentials);
+		    $('#signup').click(open_signup);
+		})
+	</script>
+</head>
+<body>
+	<h1>Echat Login</h1>
+	<br>
+	<p>Enter username:</p>
+	<input type="text" id="username"></input>
+	<p>Password:</p>
+	<input type="password" id="password"></input>
+	<br>
+	<br>
+  	<button id="login-button">LOGIN</button>
+  	<br>
+  	<br>
+  	<h3>New user signup:</h3>
+  	<button id="signup">SIGNUP</button>
+  	<div id="messages"></div>
+</body>
+</html>

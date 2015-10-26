@@ -1,0 +1,131 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>Chat home Page</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script >
+		function getParameterByName(name) {
+    		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        	results = regex.exec(location.search);
+    		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+
+		function add_users (name) {
+			$('#currentusers').append('<p></p>').children().last().text(name);
+		}
+
+		function add_message(message) {
+		    $('#messages').append('<p></p>').children().last().text(message);
+		}
+
+		function connect_to_chat() {
+
+		    socket = new WebSocket("ws://localhost:8080/mc");
+
+		    socket.onopen = function() {
+		        add_message("Connected.")
+		        var uname = getParameterByName('username');
+		        var croom = getParameterByName('chatroom');
+		        var show = "showusers,"+croom;
+				socket.send(show);
+		    };
+
+		    socket.onmessage = function(event) {
+		    	//console.log(event);
+		        add_message(event.data);
+		        switch(event.data){
+		        	case "done":
+		        		var croom = $('#newchatroomname').val();
+		        		add_message("created chatroom, now reloading!!!");
+		        		location.reload();
+		        		break;
+		        	default: 
+		        		add_users(event.data);
+		        		var text = "dumb";
+		        }
+		    };
+
+		    socket.onclose = function() {
+		        add_message("Connection closed.");
+		    };
+		}
+
+		function send_message(){
+			var msg = $('#message').val();
+			var uname = getParameterByName('username');
+		    var croom = getParameterByName('chatroom');
+			var extras = uname+","+croom;
+			var total = "message,"+extras+","+msg;
+			socket.send(total);
+		}
+
+		$(document).ready(function() {
+		    connect_to_chat();
+		    $('#sendbutton').click(send_message);
+		})
+	</script>
+	<style type="text/css">
+		
+		div#chatboxdiv{
+			float: left;
+			width: 60%;
+		}
+		div#userfunctionsdiv{
+			float: left;
+			width: 300px;
+			background-color: #e7f5fe;
+		}
+
+		textarea#chats{
+			background-color: #e7f5fe;
+			resize:none;
+			text-align: left;
+		}
+		div#chatboxdiv {
+    		display: table;
+    		height: 300px;
+    		width: 500px;
+    		overflow-y:auto;
+    		overflow: scroll;	
+    		border: 1px solid #000;
+		}
+
+		.chatMessage {
+			background-color: #e7f5fe;
+    		display: table-cell;
+    		vertical-align: bottom;
+    		overflow-y:auto;
+		}
+	</style>
+</head>
+<body>
+	<h1>Echat</h1>
+	<div id="top">
+		<h5>Chats</h5>
+		<div id="chatboxdiv">
+			<div class = "chatmessage">
+			
+			</div>
+		</div>
+		<div id="userfunctionsdiv">
+			<div id="currentusers">
+			<p><h4>Users here:</h4></p>
+			</div>
+			<br>
+			<button id="leave">Leave</button>
+		</div>
+	</div>
+	<br><br><br>
+	<br><br><br>
+	<br><br><br>
+	<br><br><br>
+	<br><br><br>
+	<div id="bottom">
+		<input type="text" id="message" cols="75"></input>
+  		<button id="sendbutton">Send</button>
+  		<div id="messages"></div>
+	</div>
+	
+</body>
+</html>

@@ -18,6 +18,9 @@
 		function add_message(message) {
 		    $('#messages').append('<p></p>').children().last().text(message);
 		}
+		function add_chat(message) {
+		    $('.chatmessage').append('<p></p>').children().last().text(message);
+		}
 
 		function connect_to_chat() {
 
@@ -27,22 +30,30 @@
 		        add_message("Connected.")
 		        var uname = getParameterByName('username');
 		        var croom = getParameterByName('chatroom');
-		        var show = "showusers,"+croom;
+		        var show = "showusers,"+uname+","+croom;
 				socket.send(show);
 		    };
 
 		    socket.onmessage = function(event) {
 		    	//console.log(event);
-		        add_message(event.data);
+		        //add_message(event.data);
 		        switch(event.data){
 		        	case "done":
 		        		var croom = $('#newchatroomname').val();
 		        		add_message("created chatroom, now reloading!!!");
 		        		location.reload();
 		        		break;
-		        	default: 
-		        		add_users(event.data);
-		        		var text = "dumb";
+		        	default:
+		        		var str = event.data;
+		        		var n = str.search(" : ");
+		        		console.log(n);
+		        		switch(n){
+		        			case -1:
+		        				add_users(event.data);
+		        				break;
+		        			default:
+		        				add_chat(event.data);
+		        		}
 		        }
 		    };
 

@@ -1,4 +1,4 @@
-%% app generated at {2015,10,27} {15,17,54}
+%% app generated at {2015,10,27} {15,38,28}
 {application,et,
              [{description,"Event Tracer"},
               {vsn,"1.5"},

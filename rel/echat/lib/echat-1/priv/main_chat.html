@@ -17,9 +17,12 @@
 
 		function add_message(message) {
 		    $('#messages').append('<p></p>').children().last().text(message);
+
 		}
 		function add_chat(message) {
 		    $('#chatmessage').append('<p></p>').children().last().text(message);
+		    var objDiv = document.getElementById("chatmessage");
+			objDiv.scrollTop = objDiv.scrollHeight;
 		}
 		function goBack() {
  		   window.history.back();
@@ -72,7 +75,9 @@
 			var extras = uname+","+croom;
 			var total = "message,"+extras+","+msg;
 			document.getElementById("message").value = '';
-			socket.send(total);
+			if (msg.length > 0){
+				socket.send(total);
+			}
 		}
 
 		$(document).ready(function() {
@@ -81,65 +86,89 @@
 		})
 	</script>
 	<style type="text/css">
-		
-		div#chatboxdiv{
-			float: left;
-			width: 60%;
-			resize:none;
-		}
-		div#userfunctionsdiv{
-			float: left;
-			width: 300px;
-			background-color: #B9FB55;
+		body {
+			width:100%;
+			/*border:1px solid green;*/
 		}
 
-		textarea#chats{
-			background-color: #e7f5fe;
-			resize:none;
-			text-align: left;
+		h1 {
+			/*border: 1px solid blue;*/
+			text-align: center;
 		}
-		div#chatboxdiv {
-    		display: table;
+
+		#top {
+			/*border: 1px solid red;*/
+			height: 400px;
+			padding: 10px;
+		}
+
+		#top h3 {
+			width: 500px;
+			text-align: center;
+			/*border: 1px solid yellow;*/
+		}
+
+		#userfunctionsdiv{
+			float: left;
+			width: 200px;
+			background-color: #B9FB55;
+			margin-left: 10px;
+			padding: 5px;
+		}
+		#chatboxdiv {
+    		float: left;
+    		resize:none;
     		height: 300px;
     		width: 500px;
     		overflow-y:auto;
-    		overflow: scroll;	
-    		border: 1px solid #000;
+    		/*border: 1px solid #000;*/
 		}
-
 		#chatmessage {
 			background-color: #e7f5fe;
-    		display: table-cell;
+    		height: 300px;
+    		width: 500px;
     		vertical-align: bottom;
     		overflow-y:auto;
-    		max-height: 300px;
+    		/*border: 1px solid violet;*/
+    		float: left;
+		}
+
+		#bottom {
+			/*border: 1px solid red;*/
+			height: 100px;
+			padding: 10px;
+		}
+
+		#bottom input {
+			width: 500px;
+		}
+
+		#bottom button {
+			width: 50px;
+			height: 20px;
+			font: arial;
+			font-weight: bold;
+			/*border: 1px solid purple;*/
 		}
 	</style>
 </head>
 <body>
 	<h1>Echat</h1>
 	<div id="top">
-		<h5>Chats</h5>
-		<div id="chatboxdiv">
-			<div id = "chatmessage">
-			
-			</div>
+		<h3>Chats</h3>
+		<div id = "chatmessage">
+
 		</div>
 		<div id="userfunctionsdiv">
 			<div id="currentusers">
-			<p><h4>Users here:</h4></p>
+				<h4>Users here:</h4>
 			</div>
 			<br>
 			<button id="leave" onclick="goBack()">Leave</button>
 		</div>
 	</div>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
-	<br><br><br>
 	<div id="bottom">
-		<input type="text" id="message" cols="75"></input>
+		<input type="text" id="message"></input>
   		<button id="sendbutton">Send</button>
   		<div id="messages"></div>
 	</div>

@@ -1,4 +1,4 @@
-%% app generated at {2015,10,26} {15,43,24}
+%% app generated at {2015,10,27} {15,17,54}
 {application,inets,
              [{description,"INETS  CXC 138 49"},
               {vsn,"5.10.4"},

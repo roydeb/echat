@@ -1,0 +1,306 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>Admin Page</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		function handle_users(data) {
+			var n = data.search("users:");
+			// add_message(n);
+			var users = data.slice(n+6);
+			var tokens = users.split(",");
+			var x;
+			document.getElementById("userselect").options.length = 0;
+			for (x in tokens) {
+				if (tokens[x].length > 0){
+					$('#userselect').append('<option value="'+tokens[x]+'"></option>').children().last().text(tokens[x]);
+					// add_message(tokens[x]);
+				}
+			}
+			
+		}
+		function handle_chatrooms(data) {
+			var n = data.search("chatrooms:");
+			// add_message(n);
+			var chatrooms = data.slice(n+10);
+			var tokens = chatrooms.split(",");
+			var x;
+			document.getElementById("chatroomselect").options.length = 0;
+			for (x in tokens) {
+				if (tokens[x].length > 0){
+					$('#chatroomselect').append('<option value="'+tokens[x]+'"></option>').children().last().text(tokens[x]);
+					// add_message(tokens[x]);
+				}
+			}
+		}
+		function add_user (user) {
+			if (user.length > 0){
+				// $("#userselect").append('<option value="'+msg+'">msg</option>');
+				$('#userselect').append('<option value="'+user+'"></option>').children().last().text(user);
+			}
+
+		}
+		function add_chatroom () {
+			var msg = $('#addusercheck').val();
+			if (msg.length > 0){
+				// $("#userselect").append('<option value="'+msg+'">msg</option>');
+				$('#chatroomselect').append('<option value="'+msg+'"></option>').children().last().text(msg);
+			}
+		}
+		function delete_user () {	
+			var msg = $('#addusercheck').val();
+			$("#userselect option[value='"+msg+"']").remove();
+		}
+		function delete_chatroom () {	
+			var msg = $('#addusercheck').val();
+			$("#chatroomselect option[value='"+msg+"']").remove();
+		}
+		function add_message (message) {
+			var curdate = new Date();
+			var datetime = curdate.getDate()+"| "+curdate.getHours()+":"+curdate.getMinutes()+":"+curdate.getSeconds()+" -> ";
+			var pri = datetime+message;
+			$('#messages').append('<p></p>').children().last().text(pri);
+		}
+		function handle_delete_all_users () {
+			var r = confirm("are you sure you want to delete all the users!!??");
+			if(r == true) {
+				socket.send("deleteallusers");
+			}
+			else {
+				add_message("good choice");
+			}
+		}
+		function connect_to_chat () {
+			socket = new WebSocket("ws://localhost:8080/admin");
+			socket.onopen = function () {
+				add_message("Connected.");
+			}
+			socket.onmessage = function (event) {
+				//add_message(event.data);
+				if(event.data.search("users:") != -1){
+					handle_users(event.data);
+				}
+				else if(event.data.search("chatrooms:") != -1){
+					handle_chatrooms(event.data);
+				}
+				else{
+					add_message(event.data);
+				}
+			}
+			socket.onclose = function() {
+		        add_message("Connection closed.");
+		    }
+		}
+		$(document).ready(function() {
+			connect_to_chat();
+		    $('#sendbutton').click(add_user);
+		    $('#deleteusercheckbutton').click(delete_user);
+		    $('#deleteallusersbutton').click(handle_delete_all_users);
+		});
+	</script>
+	<style type="text/css">
+		#header {
+			/*border: 1px solid blue;*/
+			width: 100%;
+			padding: 1px;
+			margin: 1px;
+		}
+		#panel1 {
+			/*border: 1px solid blue;*/
+			width: 100%;
+			height: 300px;
+			padding: 1px;
+			margin: 1px;
+		}
+		#panel2 {
+			border: 1px solid blue;
+			width: 100%;
+			height: 300px;
+			padding: 1px;
+			margin: 1px;
+		}
+		#users {
+			float: left;
+			/*border: 1px solid purple;*/
+			width: 49%;
+			height: 296px;
+			padding: 1px;
+			margin: 1px;
+			background-color: #cfc0e8;
+		}
+		#chatrooms {
+			float: left;
+			/*border: 1px solid purple;*/
+			width: 49%;
+			height: 296px;
+			padding: 1px;
+			margin: 1px;
+			background-color: #c9dfa5;
+		}
+		#userspanel1 {
+			float: left;
+			/*border: 1px solid green;*/
+			width: 49%;
+			height: 290px;
+			padding: 1px;
+			margin: 1px;
+			text-align: center;
+		}
+		#userspanel2 {
+			float: left;
+			/*border: 1px solid green;*/
+			width: 49%;
+			height: 290px;
+			padding: 1px;
+			margin: 1px;
+			text-align: center;
+		}
+		#userselect {
+			width: 70%;
+			margin: 20px;
+			margin-left: 50px;
+			font-family: Arial;
+			font-size: 16px;
+		}
+		#userkickbutton {
+			width: 40%;
+			margin: 20px;
+			margin-top: 80px;
+			margin-right: 50px;
+			margin-left: -60px;
+			background-color: #FFAE19;
+			font-weight: bold;
+			font-family: Arial;
+			font-size: 16px;
+		}
+		#deleteallusersbutton {
+			width: 40%;
+			margin: 20px;
+			margin-right: 50px;
+			margin-left: -60px;
+			background-color: #FF3B19;
+			font-weight: bold;
+			font-family: Arial;
+			font-size: 15px;
+		}
+		#chatroomspanel1 {
+			float: left;
+			/*border: 1px solid green;*/
+			width: 49%;
+			height: 290px;
+			padding: 1px;
+			margin: 1px;
+			text-align: center;
+		}
+		#chatroomspanel2 {
+			float: left;
+			/*border: 1px solid green;*/
+			width: 49%;
+			height: 290px;
+			padding: 1px;
+			margin: 1px;
+			text-align: center;
+		}
+		#chatroomselect {
+			width: 70%;
+			margin: 20px;
+			margin-left: 50px;
+			font-family: Arial;
+			font-size: 16px;
+		}
+		#deletechatroombutton {
+			width: 40%;
+			margin: 20px;
+			margin-top: 80px;
+			margin-right: 50px;
+			margin-left: -60px;
+			background-color: #FFAE19;
+			font-weight: bold;
+			font-family: Arial;
+			font-size: 16px;
+		}
+		#deleteallchatroomsbutton {
+			width: 40%;
+			margin: 20px;
+			margin-right: 50px;
+			margin-left: -60px;
+			background-color: #FF3B19;
+			font-weight: bold;
+			font-family: Arial;
+			font-size: 15px;
+		}
+
+		#messages {
+			float: left;
+			border: 1px solid purple;
+			width: 49%;
+			height: 296px;
+			padding: 1px;
+			margin: 1px;
+			overflow-y:auto;
+			vertical-align: bottom;
+			font-size: 13px;
+			font-family: "Courier New", Courier, monospace;
+		}
+		#check {
+			float: left;
+			border: 1px solid purple;
+			width: 49%;
+			height: 296px;
+			padding: 1px;
+			margin: 1px;
+		}
+	</style>
+</head>
+<body>
+	<div id="header">
+		<h3>Welcome to the Admin page, Admin :P</h3>
+	</div>
+	<div id="panel1">
+		<div id="users">
+			<div id="userspanel1">
+				<h4 style="text-align:left;">Select User :</h4>
+				<select id="userselect">
+					<option disabled selected> select a user </option>
+					<option value="a">a</option>
+					<option value="b">b</option>
+					<option value="c">c</option>
+					<option value="d">d</option>
+				</select>
+			</div>
+			<div id="userspanel2">
+				<button id="userkickbutton">Kick!</button>
+				<br>
+				<button id="deleteallusersbutton">Delete ALL</button>
+			</div>
+		</div>
+		<div id="chatrooms">
+			<div id="chatroomspanel1">
+				<h4 style="text-align:left;">Select Chatroom :</h4>
+				<select id="chatroomselect">
+					<option disabled selected> select a chatroom </option>
+					<option value="a">a</option>
+					<option value="b">b</option>
+					<option value="c">c</option>
+					<option value="d">d</option>
+				</select>
+			</div>
+			<div id="chatroomspanel2">
+				<button id="deletechatroombutton">Delete!</button>
+				<br>
+				<button id="deleteallchatroomsbutton">Delete ALL</button>
+			</div>
+		</div>
+	</div>
+	<div id="panel2">
+		<div id="messages">
+			
+		</div>
+		<div id="check">
+			<input type="text" id="addusercheck"></input>
+  			<button id="sendbutton">Send</button>
+  			<button id="deleteusercheckbutton">Delete</button>
+		</div>
+	</div>
+</body>
+</html>

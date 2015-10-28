@@ -33,7 +33,7 @@
 		    socket = new WebSocket("ws://localhost:8080/mc");
 
 		    socket.onopen = function() {
-		        add_message("Connected.")
+		        add_message("Connected.");
 		        var uname = getParameterByName('username');
 		        var croom = getParameterByName('chatroom');
 		        var show = "showusers,"+uname+","+croom;
@@ -65,7 +65,7 @@
 
 		    socket.onclose = function() {
 		        add_message("Connection closed.");
-		    };
+		    }
 		}
 
 		function send_message(){

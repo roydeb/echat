@@ -1,4 +1,4 @@
-%% script generated at {2015,10,27} {15,38,24}
+%% script generated at {2015,10,28} {16,40,28}
 {script,
     {"start_clean",[]},
     [{preLoaded,
@@ -72,8 +72,8 @@
           cowboy_sup,cowboy_websocket,cowboy_websocket_handler]},
      {path,["$ROOT/lib/echat-1/ebin"]},
      {primLoad,
-         [ch_handler,echat_app,echat_server,echat_sup,echat_tables,mc_handler,
-          signup_handler,ws_handler]},
+         [admin_handler,ch_handler,echat_app,echat_server,echat_sup,
+          echat_tables,mc_handler,signup_handler,ws_handler]},
      {path,["$ROOT/lib/et-1.5/ebin"]},
      {primLoad,
          [et,et_collector,et_selector,et_viewer,et_wx_contents_viewer,
@@ -456,8 +456,9 @@
                    {vsn,"1"},
                    {id,[]},
                    {modules,
-                       [ch_handler,echat_app,echat_server,echat_sup,
-                        echat_tables,mc_handler,signup_handler,ws_handler]},
+                       [admin_handler,ch_handler,echat_app,echat_server,
+                        echat_sup,echat_tables,mc_handler,signup_handler,
+                        ws_handler]},
                    {registered,[]},
                    {applications,[kernel,stdlib,cowboy]},
                    {included_applications,[]},

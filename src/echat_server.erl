@@ -24,6 +24,8 @@ init([]) ->
 			%%	[{mimetypes, cow_mimetypes, all}]}},
 			{"/ws", ws_handler, []},
 			{"/ch",ch_handler,[]},
+			{"/adhl",cowboy_static, {priv_file, echat, "admin.html"}},
+			{"/admin",admin_handler,[]},
 			{"/signup",signup_handler,[]},
 			{"/mc",mc_handler,[]},
 			{"/chat_page.html",cowboy_static,{priv_file,echat,"chat_page.html"}},

@@ -1,4 +1,4 @@
-%% app generated at {2015,10,27} {15,38,29}
+%% app generated at {2015,10,28} {16,40,32}
 {application,sasl,
              [{description,"SASL  CXC 138 11"},
               {vsn,"2.4.1"},

@@ -3,7 +3,8 @@
 -export ([init/0,insert_user/2,check_user/2,
 			insert_chatroom/1,check_chatroom/0,
 			join_chatroom/2,users_in_chatroom/1,
-			userpidenter/2,userpidget/1]).
+			userpidenter/2,userpidget/1,
+			get_all_users/0,delete_all_users/0]).
 
 init() ->
 	application:set_env(mnesia,dir,"../db"),
@@ -193,3 +194,39 @@ loop(Name,[H|T]) ->
 	end;	
 loop(Name,[]) ->
 	no.
+
+get_all_users() ->
+	Fun = fun() ->
+				mnesia:all_keys(user)
+		  end,
+	Lookup = mnesia:transaction(Fun),
+	case Lookup of
+		{atomic,Users} ->
+					io:format("~p~n",[Users]);
+		_ ->
+					io:format("fuck in getting all users~n"),
+					Users=[]
+	end,
+	Users.
+
+delete_all_users() ->
+	Lookup = mnesia:activity(sync_dirty, fun mnesia:clear_table/1, [user], mnesia_frag),
+	case Lookup of
+		{atomic,ok} ->
+			ok;
+		{aborted,R} ->
+			R;
+		_ ->
+			fuck
+	end.
+
+delete_all_chatrooms() ->
+	Lookup = mnesia:activity(sync_dirty, fun mnesia:clear_table/1, [chatroom], mnesia_frag),
+	case Lookup of
+		{atomic,ok} ->
+			ok;
+		{aborted,R} ->
+			R;
+		_ ->
+			fuck
+	end.

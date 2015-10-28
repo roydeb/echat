@@ -70,6 +70,9 @@
 				add_message("good choice");
 			}
 		}
+		function handle_delete_all_chatrooms () {
+				socket.send("deleteallchatrooms");
+		}
 		function connect_to_chat () {
 			socket = new WebSocket("ws://localhost:8080/admin");
 			socket.onopen = function () {
@@ -96,6 +99,7 @@
 		    $('#sendbutton').click(add_user);
 		    $('#deleteusercheckbutton').click(delete_user);
 		    $('#deleteallusersbutton').click(handle_delete_all_users);
+		    $('#deleteallchatroomsbutton').click(handle_delete_all_chatrooms);
 		});
 	</script>
 	<style type="text/css">

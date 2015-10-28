@@ -4,7 +4,7 @@
 			insert_chatroom/1,check_chatroom/0,
 			join_chatroom/2,users_in_chatroom/1,
 			userpidenter/2,userpidget/1,
-			get_all_users/0,delete_all_users/0]).
+			get_all_users/0,delete_all_users/0,delete_all_chatrooms/0]).
 
 init() ->
 	application:set_env(mnesia,dir,"../db"),

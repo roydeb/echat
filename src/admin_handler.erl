@@ -1,7 +1,8 @@
 -module (admin_handler).
 -behaviour (cowboy_websocket_handler).
 
--import (echat_tables, [check_chatroom/0,get_all_users/0,delete_all_users/0]).
+-import (echat_tables, [check_chatroom/0,get_all_users/0,
+	delete_all_users/0,delete_all_chatrooms/0]).
 
 -export ([init/3]).
 -export ([websocket_init/3,websocket_handle/3,websocket_info/3,websocket_terminate/3]).
@@ -27,6 +28,11 @@ websocket_handle({text,Msg},Req,State) ->
 			io:format("deleted users: ~p~n",[Del]),
 			update_lists(Pid),
 			{reply, {text, "all users deleted"}, Req, State};
+		"deleteallchatrooms" ->
+			Dele = echat_tables:delete_all_chatrooms(),
+			io:format("deleted chatrooms: ~p~n",[Dele]),
+			update_lists(Pid),
+			{reply, {text, "all chatrooms deleted"}, Req, State};
 		_ ->
 			{not_ok,Req,State}
 		end;

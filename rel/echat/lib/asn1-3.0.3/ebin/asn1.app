@@ -1,4 +1,4 @@
-%% app generated at {2015,10,28} {16,40,30}
+%% app generated at {2015,10,28} {17,5,51}
 {application,asn1,
              [{description,"The Erlang ASN1 compiler version 3.0.3"},
               {vsn,"3.0.3"},

@@ -84,7 +84,7 @@
 			socket.send(to_send);
 		}
 		function connect_to_chat () {
-			socket = new WebSocket("ws://localhost:8080/admin");
+			socket = new WebSocket("ws://10.0.3.10:8080/admin");
 			socket.onopen = function () {
 				add_message("Connected.");
 			}

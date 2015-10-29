@@ -47,14 +47,14 @@
 				$('#chatroomselect').append('<option value="'+msg+'"></option>').children().last().text(msg);
 			}
 		}
-		function delete_user () {	
-			var msg = $('#addusercheck').val();
-			$("#userselect option[value='"+msg+"']").remove();
-		}
-		function delete_chatroom () {	
-			var msg = $('#addusercheck').val();
-			$("#chatroomselect option[value='"+msg+"']").remove();
-		}
+		// function delete_user () {	
+		// 	var msg = $('#addusercheck').val();
+		// 	$("#userselect option[value='"+msg+"']").remove();
+		// }
+		// function delete_chatroom () {	
+		// 	var msg = $('#addusercheck').val();
+		// 	$("#chatroomselect option[value='"+msg+"']").remove();
+		// }
 		function add_message (message) {
 			var curdate = new Date();
 			var datetime = curdate.getDate()+"| "+curdate.getHours()+":"+curdate.getMinutes()+":"+curdate.getSeconds()+" -> ";
@@ -72,6 +72,16 @@
 		}
 		function handle_delete_all_chatrooms () {
 				socket.send("deleteallchatrooms");
+		}
+		function handle_delete_user () {
+			var user = $("#userselect").val();
+			var to_send = "deleteuser,"+user;
+			socket.send(to_send);
+		}
+		function handle_delete_chatroom () {
+			var croom = $("#chatroomselect").val();
+			var to_send = "deletechatroom,"+croom;
+			socket.send(to_send);
 		}
 		function connect_to_chat () {
 			socket = new WebSocket("ws://localhost:8080/admin");
@@ -96,10 +106,12 @@
 		}
 		$(document).ready(function() {
 			connect_to_chat();
-		    $('#sendbutton').click(add_user);
-		    $('#deleteusercheckbutton').click(delete_user);
+		    // $('#sendbutton').click(add_user);
+		    // $('#deleteusercheckbutton').click(delete_user);
 		    $('#deleteallusersbutton').click(handle_delete_all_users);
 		    $('#deleteallchatroomsbutton').click(handle_delete_all_chatrooms);
+		    $('#userkickbutton').click(handle_delete_user);
+		    $('#deletechatroombutton').click(handle_delete_chatroom);
 		});
 	</script>
 	<style type="text/css">
@@ -117,7 +129,7 @@
 			margin: 1px;
 		}
 		#panel2 {
-			border: 1px solid blue;
+			/*border: 1px solid blue;*/
 			width: 100%;
 			height: 300px;
 			padding: 1px;
@@ -236,7 +248,7 @@
 
 		#messages {
 			float: left;
-			border: 1px solid purple;
+			/*border: 1px solid purple;*/
 			width: 49%;
 			height: 296px;
 			padding: 1px;
@@ -248,7 +260,7 @@
 		}
 		#check {
 			float: left;
-			border: 1px solid purple;
+			/*border: 1px solid purple;*/
 			width: 49%;
 			height: 296px;
 			padding: 1px;
@@ -283,10 +295,10 @@
 				<h4 style="text-align:left;">Select Chatroom :</h4>
 				<select id="chatroomselect">
 					<option disabled selected> select a chatroom </option>
-					<option value="a">a</option>
-					<option value="b">b</option>
-					<option value="c">c</option>
-					<option value="d">d</option>
+					<option value="e">e</option>
+					<option value="f">f</option>
+					<option value="g">g</option>
+					<option value="h">h</option>
 				</select>
 			</div>
 			<div id="chatroomspanel2">
@@ -301,9 +313,9 @@
 			
 		</div>
 		<div id="check">
-			<input type="text" id="addusercheck"></input>
-  			<button id="sendbutton">Send</button>
-  			<button id="deleteusercheckbutton">Delete</button>
+			<!-- <input type="text" id="addusercheck"></input> -->
+  			<!-- <button id="sendbutton">Send</button> -->
+  			<!-- <button id="deleteusercheckbutton">Delete</button> -->
 		</div>
 	</div>
 </body>

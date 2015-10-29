@@ -4,7 +4,8 @@
 			insert_chatroom/1,check_chatroom/0,
 			join_chatroom/2,users_in_chatroom/1,
 			userpidenter/2,userpidget/1,
-			get_all_users/0,delete_all_users/0,delete_all_chatrooms/0]).
+			get_all_users/0,delete_all_users/0,delete_all_chatrooms/0,
+			delete_record/2]).
 
 init() ->
 	application:set_env(mnesia,dir,"../db"),
@@ -229,4 +230,18 @@ delete_all_chatrooms() ->
 			R;
 		_ ->
 			fuck
+	end.
+
+delete_record(Table,Key) ->
+	Fun = fun() ->
+			mnesia:delete({Table,Key})
+		  end,
+	Lookup = mnesia:transaction(Fun),
+	case Lookup of
+		{atomic,[]} ->
+			not_exist;
+		{atomic,ok} ->
+			deleted;
+		_ ->
+			nopes
 	end.
